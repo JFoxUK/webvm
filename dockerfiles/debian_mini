@@ -56,36 +56,26 @@ RUN mkdir -p /tmp/room5 \
 # Copy all zipped rooms to user's home
 RUN cp /game/room*.zip /home/user/
 
-# ASCII splash and intro
-RUN echo "clear"
-\
-echo "\n\n";
-\
-echo "  _      _                  _   _                          ";
-\
-echo " | |    (_)                | | (_)                         ";
-\
-echo " | |     _ _ __   ___ _ __ | |_ _  ___  _ __   ___ ___     ";
-\
-echo " | |    | | '_ \ / _ \ '_ \| __| |/ _ \| '_ \ / __/ _ \    ";
-\
-echo " | |____| | | | |  __/ | | | |_| | (_) | | | | (_|  __/    ";
-\
-echo " |______|_|_| |_|\___|_| |_|\__|_|\___/|_| |_|\___\___|    ";
-\
-echo "                                                           ";
-\
-echo "                 LINUX DUNGEON GAME                        ";
-\
-echo "-----------------------------------------------------------";
-\
-echo "Use 'unzip room1.zip' to begin your adventure";
-\
-echo "Each room holds a key to the next. Use Linux commands to survive!";
-\
-echo "Good luck, adventurer.";
-\
-' >> /home/user/.bashrc
+# ASCII splash and intro on login
+RUN bash -c 'cat << \"EOF\" >> /home/user/.bashrc
+
+clear
+echo ""
+echo "  _      _                  _   _                          "
+echo " | |    (_)                | | (_)                         "
+echo " | |     _ _ __   ___ _ __ | |_ _  ___  _ __   ___ ___     "
+echo " | |    | | '\''_ \\ / _ \\ '\''_ \\| __| |/ _ \\| '\''_ \\ / __/ _ \\    "
+echo " | |____| | | | |  __/ | | | |_| | (_) | | | | (_|  __/    "
+echo " |______|_|_| |_|\\___|_| |_|\\__|_|\\___/|_| |_|\\___\\___|    "
+echo "                                                           "
+echo "                 LINUX DUNGEON GAME                        "
+echo "-----------------------------------------------------------"
+echo "Use 'unzip room1.zip' to begin your adventure"
+echo "Each room holds a key to the next. Use Linux commands to survive!"
+echo "Good luck, adventurer."
+
+EOF'
+
 
 # Set working directory and env
 WORKDIR /home/user
