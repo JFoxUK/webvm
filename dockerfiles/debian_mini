@@ -1,48 +1,96 @@
 FROM --platform=i386 i386/debian:buster
 
-# Avoid interactive prompts during package installation
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install required packages
 RUN apt-get update \
  && apt-get -y upgrade \
- && apt-get install -y apt-utils zip unzip vim less binutils \
+ && apt-get install -y apt-utils zip unzip vim less binutils curl \
  && rm -rf /var/lib/apt/lists/*
 
-# Set up user and puzzle environment
-RUN useradd -M -d /game -s /bin/bash user \
- && echo "user:password" | chpasswd \
- && echo "root:password" | chpasswd \
- && mkdir -p /game/room1 /game/room2 \
- && mkdir -p /game/room3/corridor/roomA /game/room3/corridor/roomB \
- && mkdir -p /game/room3/tunnel/deeper/secret /game/room3/cave \
- && mkdir -p /game/room4 /game/room5 \
- && echo "You find yourself in a dark dungeon. The exit is locked." > /game/room1/README.txt \
- && echo "Perhaps something hidden holds the key..." >> /game/room1/README.txt \
- && echo "bronze" > /game/room1/.key_room2 \
- && echo "This parchment is too faded to read." > /game/room2/scroll1.txt \
- && echo "The scroll reads: 'silver' is the key." > /game/room2/scroll2.txt \
- && echo "An empty scroll, with nothing on it." > /game/room2/scroll3.txt \
- && echo "Just a dead end." > /game/room3/corridor/roomB/note.txt \
- && echo "gold" > /game/room3/tunnel/deeper/secret/treasure.txt \
- && echo "No key here." > /game/room3/cave/stone.txt \
- && echo "The inscription on the wall is incomprehensible:" > /game/room4/cipher.txt \
- && echo "cGxhdGludW0=" >> /game/room4/cipher.txt \
- && dd if=/dev/urandom bs=1 count=100 of=/game/room5/ancient_relic.bin \
- && echo -n "diamond" >> /game/room5/ancient_relic.bin \
- && echo "This mysterious file might contain human-readable clues." > /game/room5/README.txt \
- && echo "Maybe the 'strings' of this artifact will reveal its secret." >> /game/room5/README.txt \
- && cd /game \
- && zip -r -P bronze room2.zip room2 \
- && zip -r -P silver room3.zip room3 \
- && zip -r -P gold room4.zip room4 \
- && zip -r -P platinum room5.zip room5 \
- && rm -rf room2 room3 room4 room5 \
- && chown -R user:user /game
+# Create user and home
+RUN useradd -m user && echo "user:password" | chpasswd && echo "root:password" | chpasswd
 
-# Set working directory and environment
-WORKDIR /home/user/
-ENV HOME="/game" TERM="xterm" USER="user" SHELL="/bin/bash" EDITOR="vim" LANG="en_US.UTF-8" LC_ALL="C"
+# Create documents folder (WebVM expects this)
+RUN mkdir -p /home/user/documents && chown -R user:user /home/user/documents
 
-# Default command to start a bash login shell
+# Room 1 - Basic Commands
+RUN mkdir -p /game/room1 \
+ && echo "You awaken in a stone chamber. A note is here." > /game/room1/note.txt \
+ && echo "Explore. Discover. Use the basics: ls, cd, cat." >> /game/room1/note.txt \
+ && echo "The key is: bronze" > /game/room1/.key_room2
+
+# Room 2 - Hidden and Nested
+RUN mkdir -p /tmp/room2/deep/.hidden/path/to/secret \
+ && echo "The scroll reads: 'Look deeper, young hacker.'" > /tmp/room2/clue1.txt \
+ && echo "Try: find . -name 'key*' or grep -r 'key'" > /tmp/room2/clue2.txt \
+ && echo "The key is: silver" > /tmp/room2/deep/.hidden/path/to/secret/key_room3.txt \
+ && cd /tmp && zip -r -P bronze /game/room2.zip room2 \
+ && rm -rf /tmp/room2
+
+# Room 3 - VIM Editing Challenge
+RUN mkdir -p /tmp/room3 \
+ && echo "Edit me in vim and change OPEN=false to OPEN=true" > /tmp/room3/config.txt \
+ && echo "OPEN=false" >> /tmp/room3/config.txt \
+ && echo "Once saved, use grep to verify: grep OPEN config.txt" >> /tmp/room3/clue.txt \
+ && echo "The key is: gold" > /tmp/room3/key.txt \
+ && cd /tmp && zip -r -P silver /game/room3.zip room3 \
+ && rm -rf /tmp/room3
+
+# Room 4 - Obfuscated Clue
+RUN mkdir -p /tmp/room4 \
+ && echo 'Decode the cipher: VGhlIGtleSBpczogcGxhdGludW0=' > /tmp/room4/clue.txt \
+ && echo '(Hint: it\'s base64)' >> /tmp/room4/clue.txt \
+ && echo 'The key is: platinum' > /tmp/room4/decoded.txt \
+ && cd /tmp && zip -r -P gold /game/room4.zip room4 \
+ && rm -rf /tmp/room4
+
+# Room 5 - Final Boss with binary
+RUN mkdir -p /tmp/room5 \
+ && echo "Use 'strings dragon' to reveal the key." > /tmp/room5/instructions.txt \
+ && dd if=/dev/urandom bs=1 count=100 of=/tmp/room5/dragon 2>/dev/null \
+ && echo 'diamond' >> /tmp/room5/dragon \
+ && cd /tmp && zip -r -P platinum /game/room5.zip room5 \
+ && rm -rf /tmp/room5
+
+# Copy all zipped rooms to user's home
+RUN cp /game/room*.zip /home/user/
+
+# ASCII splash and intro
+RUN echo '
+clear
+\
+echo "\n\n";
+\
+echo "  _      _                  _   _                          ";
+\
+echo " | |    (_)                | | (_)                         ";
+\
+echo " | |     _ _ __   ___ _ __ | |_ _  ___  _ __   ___ ___     ";
+\
+echo " | |    | | '_ \ / _ \ '_ \| __| |/ _ \| '_ \ / __/ _ \    ";
+\
+echo " | |____| | | | |  __/ | | | |_| | (_) | | | | (_|  __/    ";
+\
+echo " |______|_|_| |_|\___|_| |_|\__|_|\___/|_| |_|\___\___|    ";
+\
+echo "                                                           ";
+\
+echo "                 LINUX DUNGEON GAME                        ";
+\
+echo "-----------------------------------------------------------";
+\
+echo "Use 'unzip room1.zip' to begin your adventure";
+\
+echo "Each room holds a key to the next. Use Linux commands to survive!";
+\
+echo "Good luck, adventurer.";
+\
+' >> /home/user/.bashrc
+
+# Set working directory and env
+WORKDIR /home/user
+ENV HOME="/home/user" TERM="xterm" USER="user" SHELL="/bin/bash" EDITOR="vim" LANG="en_US.UTF-8" LC_ALL="C"
+
+# Start bash login shell
 CMD ["/bin/bash", "-l"]
