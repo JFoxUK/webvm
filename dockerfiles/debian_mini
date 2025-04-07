@@ -1,71 +1,48 @@
 FROM --platform=i386 i386/debian:buster
+
+# Avoid interactive prompts during package installation
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get clean && apt-get update && apt-get -y upgrade
-RUN apt-get -y install apt-utils gcc \
-	python3 vim unzip ruby nodejs \
-	fakeroot dbus base whiptail hexedit \
-	patch wamerican ucf manpages \
-	file luajit make lua50 dialog curl \
-	less cowsay netcat-openbsd
-RUN useradd -m user && echo "user:password" | chpasswd
-COPY --chown=user:user ./examples /home/user/examples
-RUN chmod -R +x  /home/user/examples/lua
 
-# Room 1: Dungeon Cell
-RUN mkdir -p /game \
- && echo 'You awaken in a dimly lit dungeon cell. The air is damp and the stone walls are cold.' > /game/README.txt \
- && echo 'A flickering torch casts long shadows across the floor. A heavy locked door blocks the exit.' >> /game/README.txt \
- && echo 'On the ground, a scrap of parchment reads: "Not all treasures are visible to the naked eye."' >> /game/README.txt \
- && echo 'Perhaps the key to escape this cell is hidden from plain view...' >> /game/README.txt \
- && echo 'bronze' > /game/.key_room2
+# Install required packages
+RUN apt-get update \
+ && apt-get -y upgrade \
+ && apt-get install -y apt-utils zip unzip vim less binutils \
+ && rm -rf /var/lib/apt/lists/*
 
-# Room 2: Archive of Scrolls
-RUN mkdir -p /tmp/room2 \
- && echo 'This scroll is indecipherable gibberish.' > /tmp/room2/scroll1.txt \
- && echo 'The ancient runes on this scroll don’t reveal anything useful.' > /tmp/room2/scroll2.txt \
- && echo 'The key is: silver' > /tmp/room2/scroll3.txt \
- && echo 'This scroll crumbles to dust as you read it.' > /tmp/room2/scroll4.txt \
- && echo 'The writing on this scroll has faded beyond recognition.' > /tmp/room2/scroll5.txt \
- && echo 'You step into a small archive room filled with dusty scrolls. One of these scrolls might contain a clue.' > /tmp/room2/README.txt \
- && echo 'Perhaps your hacker instincts (grep) can help sift through the text to find the key.' >> /tmp/room2/README.txt \
- && cd /tmp && zip -r -P bronze /game/room2.zip room2 \
- && rm -rf /tmp/room2
+# Set up user and puzzle environment
+RUN useradd -M -d /game -s /bin/bash user \
+ && echo "user:password" | chpasswd \
+ && echo "root:password" | chpasswd \
+ && mkdir -p /game/room1 /game/room2 \
+ && mkdir -p /game/room3/corridor/roomA /game/room3/corridor/roomB \
+ && mkdir -p /game/room3/tunnel/deeper/secret /game/room3/cave \
+ && mkdir -p /game/room4 /game/room5 \
+ && echo "You find yourself in a dark dungeon. The exit is locked." > /game/room1/README.txt \
+ && echo "Perhaps something hidden holds the key..." >> /game/room1/README.txt \
+ && echo "bronze" > /game/room1/.key_room2 \
+ && echo "This parchment is too faded to read." > /game/room2/scroll1.txt \
+ && echo "The scroll reads: 'silver' is the key." > /game/room2/scroll2.txt \
+ && echo "An empty scroll, with nothing on it." > /game/room2/scroll3.txt \
+ && echo "Just a dead end." > /game/room3/corridor/roomB/note.txt \
+ && echo "gold" > /game/room3/tunnel/deeper/secret/treasure.txt \
+ && echo "No key here." > /game/room3/cave/stone.txt \
+ && echo "The inscription on the wall is incomprehensible:" > /game/room4/cipher.txt \
+ && echo "cGxhdGludW0=" >> /game/room4/cipher.txt \
+ && dd if=/dev/urandom bs=1 count=100 of=/game/room5/ancient_relic.bin \
+ && echo -n "diamond" >> /game/room5/ancient_relic.bin \
+ && echo "This mysterious file might contain human-readable clues." > /game/room5/README.txt \
+ && echo "Maybe the 'strings' of this artifact will reveal its secret." >> /game/room5/README.txt \
+ && cd /game \
+ && zip -r -P bronze room2.zip room2 \
+ && zip -r -P silver room3.zip room3 \
+ && zip -r -P gold room4.zip room4 \
+ && zip -r -P platinum room5.zip room5 \
+ && rm -rf room2 room3 room4 room5 \
+ && chown -R user:user /game
 
-# Room 3: Labyrinth
-RUN mkdir -p /tmp/room3/labyrinth/passage1 \
- && mkdir -p /tmp/room3/labyrinth/passage2/hidden \
- && mkdir -p /tmp/room3/labyrinth/passage3 \
- && echo 'Dead end.' > /tmp/room3/labyrinth/passage1/note.txt \
- && echo 'This chest is empty.' > /tmp/room3/labyrinth/passage2/trap.txt \
- && echo 'The key is: gold' > /tmp/room3/labyrinth/passage2/hidden/secret_key.txt \
- && echo 'Dead end.' > /tmp/room3/labyrinth/passage3/note.txt \
- && echo 'You find yourself in a maze of twisty passages. Seek and ye shall find.' > /tmp/room3/README.txt \
- && cd /tmp && zip -r -P silver /game/room3.zip room3 \
- && rm -rf /tmp/room3
-
-# Room 4: Wizard’s Sanctum
-RUN mkdir -p /tmp/room4 \
- && echo 'You enter a wizard\'s sanctum buzzing with magical energy.' > /tmp/room4/README.txt \
- && echo 'On a pedestal lies a parchment labeled "Cipher". The wizard\'s note says to decode it.' >> /tmp/room4/README.txt \
- && echo 'VGhlIGtleSBpczogcGxhdGludW0=' > /tmp/room4/cipher.txt \
- && echo '(Hint: The above text is base64 encoded. Use your skills to decipher it.)' >> /tmp/room4/README.txt \
- && cd /tmp && zip -r -P gold /game/room4.zip room4 \
- && rm -rf /tmp/room4
-
-# Room 5: Dragon's Lair
-RUN mkdir -p /tmp/room5 \
- && echo 'You stand in the dragon\'s lair, facing the final boss of this dungeon.' > /tmp/room5/README.txt \
- && echo 'Its body shimmers with code – perhaps its secret name is embedded within.' >> /tmp/room5/README.txt \
- && echo 'Hint: Use "strings" on the dragon binary.' >> /tmp/room5/README.txt \
- && dd if=/dev/urandom bs=1 count=100 of=/tmp/room5/dragon 2>/dev/null \
- && echo 'diamond' >> /tmp/room5/dragon \
- && cd /tmp && zip -r -P platinum /game/room5.zip room5 \
- && rm -rf /tmp/room5
-
-# We set WORKDIR, as this gets extracted by Webvm to be used as the cwd. This is optional.
+# Set working directory and environment
 WORKDIR /game
+ENV HOME="/game" TERM="xterm" USER="user" SHELL="/bin/bash" EDITOR="vim" LANG="en_US.UTF-8" LC_ALL="C"
 
-# We set env, as this gets extracted by Webvm. This is optional.
-ENV HOME="/home/user" TERM="xterm" USER="user" SHELL="/bin/bash" EDITOR="vim" LANG="en_US.UTF-8" LC_ALL="C"
-RUN echo 'root:password' | chpasswd
-CMD [ "/bin/bash" ]
+# Default command to start a bash login shell
+CMD ["/bin/bash", "-l"]
