@@ -57,8 +57,7 @@ RUN mkdir -p /tmp/room5 \
 RUN cp /game/room*.zip /home/user/
 
 # ASCII splash and intro
-RUN echo '
-clear
+RUN echo "clear"
 \
 echo "\n\n";
 \
