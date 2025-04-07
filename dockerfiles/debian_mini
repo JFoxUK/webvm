@@ -41,7 +41,7 @@ RUN useradd -M -d /game -s /bin/bash user \
  && chown -R user:user /game
 
 # Set working directory and environment
-WORKDIR /game
+WORKDIR /home/user/
 ENV HOME="/game" TERM="xterm" USER="user" SHELL="/bin/bash" EDITOR="vim" LANG="en_US.UTF-8" LC_ALL="C"
 
 # Default command to start a bash login shell
