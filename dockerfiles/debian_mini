@@ -10,8 +10,61 @@ RUN apt-get -y install apt-utils gcc \
 RUN useradd -m user && echo "user:password" | chpasswd
 COPY --chown=user:user ./examples /home/user/examples
 RUN chmod -R +x  /home/user/examples/lua
+
+# Room 1: Dungeon Cell
+RUN mkdir -p /game \
+ && echo 'You awaken in a dimly lit dungeon cell. The air is damp and the stone walls are cold.' > /game/README.txt \
+ && echo 'A flickering torch casts long shadows across the floor. A heavy locked door blocks the exit.' >> /game/README.txt \
+ && echo 'On the ground, a scrap of parchment reads: "Not all treasures are visible to the naked eye."' >> /game/README.txt \
+ && echo 'Perhaps the key to escape this cell is hidden from plain view...' >> /game/README.txt \
+ && echo 'bronze' > /game/.key_room2
+
+# Room 2: Archive of Scrolls
+RUN mkdir -p /tmp/room2 \
+ && echo 'This scroll is indecipherable gibberish.' > /tmp/room2/scroll1.txt \
+ && echo 'The ancient runes on this scroll don’t reveal anything useful.' > /tmp/room2/scroll2.txt \
+ && echo 'The key is: silver' > /tmp/room2/scroll3.txt \
+ && echo 'This scroll crumbles to dust as you read it.' > /tmp/room2/scroll4.txt \
+ && echo 'The writing on this scroll has faded beyond recognition.' > /tmp/room2/scroll5.txt \
+ && echo 'You step into a small archive room filled with dusty scrolls. One of these scrolls might contain a clue.' > /tmp/room2/README.txt \
+ && echo 'Perhaps your hacker instincts (grep) can help sift through the text to find the key.' >> /tmp/room2/README.txt \
+ && cd /tmp && zip -r -P bronze /game/room2.zip room2 \
+ && rm -rf /tmp/room2
+
+# Room 3: Labyrinth
+RUN mkdir -p /tmp/room3/labyrinth/passage1 \
+ && mkdir -p /tmp/room3/labyrinth/passage2/hidden \
+ && mkdir -p /tmp/room3/labyrinth/passage3 \
+ && echo 'Dead end.' > /tmp/room3/labyrinth/passage1/note.txt \
+ && echo 'This chest is empty.' > /tmp/room3/labyrinth/passage2/trap.txt \
+ && echo 'The key is: gold' > /tmp/room3/labyrinth/passage2/hidden/secret_key.txt \
+ && echo 'Dead end.' > /tmp/room3/labyrinth/passage3/note.txt \
+ && echo 'You find yourself in a maze of twisty passages. Seek and ye shall find.' > /tmp/room3/README.txt \
+ && cd /tmp && zip -r -P silver /game/room3.zip room3 \
+ && rm -rf /tmp/room3
+
+# Room 4: Wizard’s Sanctum
+RUN mkdir -p /tmp/room4 \
+ && echo 'You enter a wizard\'s sanctum buzzing with magical energy.' > /tmp/room4/README.txt \
+ && echo 'On a pedestal lies a parchment labeled "Cipher". The wizard\'s note says to decode it.' >> /tmp/room4/README.txt \
+ && echo 'VGhlIGtleSBpczogcGxhdGludW0=' > /tmp/room4/cipher.txt \
+ && echo '(Hint: The above text is base64 encoded. Use your skills to decipher it.)' >> /tmp/room4/README.txt \
+ && cd /tmp && zip -r -P gold /game/room4.zip room4 \
+ && rm -rf /tmp/room4
+
+# Room 5: Dragon's Lair
+RUN mkdir -p /tmp/room5 \
+ && echo 'You stand in the dragon\'s lair, facing the final boss of this dungeon.' > /tmp/room5/README.txt \
+ && echo 'Its body shimmers with code – perhaps its secret name is embedded within.' >> /tmp/room5/README.txt \
+ && echo 'Hint: Use "strings" on the dragon binary.' >> /tmp/room5/README.txt \
+ && dd if=/dev/urandom bs=1 count=100 of=/tmp/room5/dragon 2>/dev/null \
+ && echo 'diamond' >> /tmp/room5/dragon \
+ && cd /tmp && zip -r -P platinum /game/room5.zip room5 \
+ && rm -rf /tmp/room5
+
 # We set WORKDIR, as this gets extracted by Webvm to be used as the cwd. This is optional.
-WORKDIR /home/user/
+WORKDIR /game
+
 # We set env, as this gets extracted by Webvm. This is optional.
 ENV HOME="/home/user" TERM="xterm" USER="user" SHELL="/bin/bash" EDITOR="vim" LANG="en_US.UTF-8" LC_ALL="C"
 RUN echo 'root:password' | chpasswd
