@@ -1,5 +1,6 @@
 const color = "\x1b[1;35m";
 const normal = "\x1b[0m";
+const underline= "\x1b[94;4m";
 export const introMessage = [
     "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
 	"|                                                                             |",
@@ -45,9 +46,9 @@ export const introMessage = [
     color + "              WELCOME TO THE LINUX DUNGEON GAME" + normal,
     "",
     "",
-    color + "          TAKE A LOOK IN YOUR HOME DIR" + normal,
-    color + "EACH ROOM REQUIRES YOU TO USE LINUX COMMANDS TO FIND A KEY" + normal,
-    color + "TRY STARTING WITH ls - GOOD LUCK ON YOUR ADVENTURE" + normal,
+    color +  underline + "          TAKE A LOOK IN YOUR HOME DIR" + normal,
+    color +  underline + "EACH ROOM REQUIRES YOU TO USE LINUX COMMANDS TO FIND A KEY" + normal,
+    color +  underline + "TRY STARTING WITH ls - GOOD LUCK ON YOUR ADVENTURE" + normal,
 ];
 export const errorMessage = [
     color + "CheerpX could not start" + normal,
