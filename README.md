@@ -11,7 +11,7 @@ This is a fantasy-themed, terminal-only, in-browser Linux adventure built on top
 
 ## 🔑 Getting Started
 
-1. Visit: `https://<your-github-username>.github.io/webvm/`
+1. Visit: `https://jfoxuk.github.io/webvm/`
 2. Wait for the virtual machine to boot.
 3. When the terminal appears, you'll be greeted with ASCII art and instructions.
 4. Start your journey:
