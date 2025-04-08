@@ -40,7 +40,7 @@ RUN mkdir -p /tmp/room3 \
 # Room 4 - Obfuscated Clue
 RUN mkdir -p /tmp/room4 \
  && echo 'Decode the cipher: VGhlIGtleSBpczogcGxhdGludW0=' > /tmp/room4/clue.txt \
- && echo '(Hint: it\'s base64)' >> /tmp/room4/clue.txt \
+ && echo '\(Hint: it\'s base64\)' >> /tmp/room4/clue.txt \
  && echo 'The key is: platinum' > /tmp/room4/decoded.txt \
  && cd /tmp && zip -r -P gold /game/room4.zip room4 \
  && rm -rf /tmp/room4
