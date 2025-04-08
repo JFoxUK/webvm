@@ -54,7 +54,7 @@ RUN mkdir -p /tmp/room5 \
  && rm -rf /tmp/room5
 
 # Copy all zipped rooms to user's home
-RUN cp /game/room*.zip /home/user/
+RUN cp /game/room* /home/user/
 
 
 # Set working directory and env
