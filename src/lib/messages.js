@@ -41,6 +41,8 @@ export const introMessage = [
     color + "                 " + underline + "TAKE A LOOK IN YOUR HOME DIR" + normal,
     color + "    " + underline + "EACH ROOM REQUIRES YOU TO USE LINUX COMMANDS TO FIND A KEY" + normal,
     color + "        " + underline + "TRY STARTING WITH ls - GOOD LUCK ON YOUR ADVENTURE" + normal,
+    "",
+    "",
 ];
 export const errorMessage = [
     color + "CheerpX could not start" + normal,
