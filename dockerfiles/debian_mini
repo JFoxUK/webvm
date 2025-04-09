@@ -1,69 +1,76 @@
+# Linux Dungeon Game Dockerfile (Enhanced Puzzle Version)
 FROM --platform=i386 i386/debian:buster
 
 ARG DEBIAN_FRONTEND=noninteractive
-
-# Install required packages
 RUN apt-get update \
  && apt-get -y upgrade \
  && apt-get install -y apt-utils zip unzip vim less binutils curl \
  && rm -rf /var/lib/apt/lists/*
 
-# Create user and home
-RUN useradd -m user && echo "user:password" | chpasswd && echo "root:password" | chpasswd
+# Create user and set passwords
+RUN useradd -m user && echo "user:password" | chpasswd \
+ && echo "root:password" | chpasswd
 
-# Create documents folder (WebVM expects this)
+# WebVM environment setup
 RUN mkdir -p /home/user/documents && chown -R user:user /home/user/documents
 
-# Room 1 - Basic Commands
+# Room 1 - Intro (Key encoded in base64)
 RUN mkdir -p /game/room1 \
  && echo "You awaken in a stone chamber. A note is here." > /game/room1/note.txt \
  && echo "Explore. Discover. Use the basics: ls, cd, cat." >> /game/room1/note.txt \
- && echo "The key is: bronze" > /game/room1/.key_room2
+ && echo "A scrap of paper is here with strange text (see code.txt)." >> /game/room1/note.txt \
+ && echo "Hint: decoding it might reveal something useful." >> /game/room1/note.txt \
+ && echo "VGhlIGtleSBpczogYnJvbnpl" > /game/room1/code.txt
 
-# Room 2 - Hidden and Nested
-RUN mkdir -p /tmp/room2/deep/.hidden/path/to/secret \
- && echo "The scroll reads: 'Look deeper, young hacker.'" > /tmp/room2/clue1.txt \
- && echo "Try: find . -name 'key*' or grep -r 'key'" > /tmp/room2/clue2.txt \
- && echo "The key is: silver" > /tmp/room2/deep/.hidden/path/to/secret/key_room3.txt \
+# Room 2 - Hidden Key in Many Files (search with grep/find)
+RUN mkdir -p /tmp/room2/library \
+ && echo "Look deeper, young hacker. Not everything is given freely." > /tmp/room2/clue.txt \
+ && for i in $(seq 1 50); do echo "An ancient scroll with illegible text." > /tmp/room2/library/scroll${i}.txt; done \
+ && echo "The key is: silver" > /tmp/room2/library/scroll17.txt \
  && cd /tmp && zip -r -P bronze /game/room2.zip room2 \
  && rm -rf /tmp/room2
 
-# Room 3 - VIM Editing Challenge
+# Room 3 - VIM Editing Challenge (uncomment to reveal key)
 RUN mkdir -p /tmp/room3 \
- && echo "Edit me in vim and change OPEN=false to OPEN=true" > /tmp/room3/config.txt \
- && echo "OPEN=false" >> /tmp/room3/config.txt \
- && echo "Once saved, use grep to verify: grep OPEN config.txt" >> /tmp/room3/clue.txt \
- && echo "The key is: gold" > /tmp/room3/key.txt \
+ && echo "OPEN=false" > /tmp/room3/config.txt \
+ && echo "# The gate will open when the above is true." >> /tmp/room3/config.txt \
+ && echo "# Next room password: gold (remove this comment after you open the gate)" >> /tmp/room3/config.txt \
+ && echo "The door remains shut..." > /tmp/room3/README.txt \
+ && echo "(Hint: use vim to edit config.txt)" >> /tmp/room3/README.txt \
  && cd /tmp && zip -r -P silver /game/room3.zip room3 \
  && rm -rf /tmp/room3
 
-# Room 4 - Obfuscated Clue
+# Room 4 - Script Execution Puzzle (must run script to get key)
 RUN mkdir -p /tmp/room4 \
- && echo 'Decode the cipher: VGhlIGtleSBpczogcGxhdGludW0=' > /tmp/room4/clue.txt \
- && echo "(Hint: it's base64)" >> /tmp/room4/clue.txt \
- && echo 'The key is: platinum' > /tmp/room4/decoded.txt \
+ && echo '#!/bin/bash' > /tmp/room4/cipher.sh \
+ && echo 'encoded="VGhlIGtleSBpczogcGxhdGludW0="' >> /tmp/room4/cipher.sh \
+ && echo 'echo "$encoded" | base64 -d' >> /tmp/room4/cipher.sh \
+ && chmod +x /tmp/room4/cipher.sh \
+ && echo "A mysterious script is here, named cipher.sh." > /tmp/room4/README.txt \
+ && echo "It won't give up its secrets by mere reading... perhaps try executing it." >> /tmp/room4/README.txt \
  && cd /tmp && zip -r -P gold /game/room4.zip room4 \
  && rm -rf /tmp/room4
 
-# Room 5 - Final Boss with binary
+# Room 5 - Final Boss (Binary with hidden key and decoys)
 RUN mkdir -p /tmp/room5 \
- && echo "Use 'strings dragon' to reveal the key." > /tmp/room5/instructions.txt \
+ && echo "The inscription on the wall reads: 'The key is emerald.'" > /tmp/room5/clue.txt \
+ && echo "Use 'strings dragon' to reveal the real key." > /tmp/room5/instructions.txt \
  && dd if=/dev/urandom bs=1 count=100 of=/tmp/room5/dragon 2>/dev/null \
  && echo 'diamond' >> /tmp/room5/dragon \
  && cd /tmp && zip -r -P platinum /game/room5.zip room5 \
  && rm -rf /tmp/room5
 
-# Copy all zipped rooms to user's home
-RUN cp -r /game/room1 /home/user/ && \
-    cp /game/room2.zip /home/user/ && \
-    cp /game/room3.zip /home/user/ && \
-    cp /game/room4.zip /home/user/ && \
-    cp /game/room5.zip /home/user/
+# Copy all starting files to user's home
+RUN cp -r /game/room1 /home/user/ \
+ && cp /game/room2.zip /home/user/ \
+ && cp /game/room3.zip /home/user/ \
+ && cp /game/room4.zip /home/user/ \
+ && cp /game/room5.zip /home/user/ \
+ && chown -R user:user /home/user
 
-
-# Set working directory and env
+# Set working directory and environment variables
 WORKDIR /home/user
 ENV HOME="/home/user" TERM="xterm" USER="user" SHELL="/bin/bash" EDITOR="vim" LANG="en_US.UTF-8" LC_ALL="C"
 
-# Start bash login shell
+# Start bash in login mode for WebVM
 CMD ["/bin/bash", "-l"]
