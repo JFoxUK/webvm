@@ -56,14 +56,24 @@ RUN mkdir -p /tmp/room4 \
  && rm -rf /tmp/room4
 
 # Room 5 - Final Boss (Binary with hidden key and decoys)
-RUN mkdir -p /tmp/room5 \
- && echo "The inscription on the wall reads: 'The key is emerald.'" > /tmp/room5/clue.txt \
- && echo "Use 'strings dragon' to reveal the real key." > /tmp/room5/instructions.txt \
- && dd if=/dev/urandom bs=1 count=100 of=/tmp/room5/dragon 2>/dev/null \
- && echo 'diamond' >> /tmp/room5/dragon \
- && cd /tmp && zip -r -P platinum /game/room5.zip room5 \
- && rm -rf /tmp/room5
-
+RUN mkdir -p /tmp/room5 && echo "Use 'strings dragon' to reveal the key." > /tmp/room5/instructions.txt 
+ && dd if=/dev/urandom bs=1 count=100 of=/tmp/room5/dragon 2>/dev/null && echo 'diamond' >> /tmp/room5/dragon 
+ && echo '#!/bin/bash' > /tmp/room5/complete.sh 
+ && echo 'read -p "Enter the final key: " input' >> /tmp/room5/complete.sh 
+ && echo 'if [ "$input" = "diamond" ]; then' >> /tmp/room5/complete.sh 
+ && echo '  echo "\n\n🎉 CONGRATULATIONS 🎉"' >> /tmp/room5/complete.sh 
+ && echo '  echo "You have completed the Linux Dungeon Game!"' >> /tmp/room5/complete.sh 
+ && echo '  echo ""' >> /tmp/room5/complete.sh 
+ && echo '  echo "================== CERTIFICATE =============="' >> /tmp/room5/complete.sh 
+ && echo '  echo "|                                           |"' >> /tmp/room5/complete.sh 
+ && echo '  echo "|        Certified Terminal Adventurer      |"' >> /tmp/room5/complete.sh 
+ && echo '  echo "|         Conqueror of the Dungeon CLI      |"' >> /tmp/room5/complete.sh 
+ && echo '  echo "|                 by JFOXUK                 |"' >> /tmp/room5/complete.sh 
+ && echo '  echo "|___________________________________________|"' >> /tmp/room5/complete.sh 
+ && echo 'else' >> /tmp/room5/complete.sh 
+ && echo '  echo "Wrong key. The dragon still lives..."' >> /tmp/room5/complete.sh 
+ && echo 'fi' >> /tmp/room5/complete.sh 
+ && chmod +x /tmp/room5/complete.sh 
 # Copy all starting files to user's home
 RUN cp -r /game/room1 /home/user/ \
  && cp /game/room2.zip /home/user/ \
