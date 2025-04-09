@@ -30,15 +30,19 @@ RUN mkdir -p /tmp/room2/library \
  && cd /tmp && zip -r -P bronze /game/room2.zip room2 \
  && rm -rf /tmp/room2
 
-# Room 3 - VIM Editing Challenge (uncomment to reveal key)
+# Room 3 – VIM Editing Required to Unlock Room 4
 RUN mkdir -p /tmp/room3 \
  && echo "OPEN=false" > /tmp/room3/config.txt \
- && echo "# The gate will open when the above is true." >> /tmp/room3/config.txt \
- && echo "# Next room password: gold (remove this comment after you open the gate)" >> /tmp/room3/config.txt \
- && echo "The door remains shut..." > /tmp/room3/README.txt \
- && echo "(Hint: use vim to edit config.txt)" >> /tmp/room3/README.txt \
+ && echo "# Change OPEN to true to proceed." >> /tmp/room3/config.txt \
+ && echo "# (Hint: use vim to edit this file)" >> /tmp/room3/config.txt \
+ && echo '#!/bin/bash' > /tmp/room3/unlock.sh \
+ && echo 'source config.txt' >> /tmp/room3/unlock.sh \
+ && echo 'if [ "$OPEN" = "true" ]; then echo "The key is: gold"; else echo "The gate remains shut..."; fi' >> /tmp/room3/unlock.sh \
+ && chmod +x /tmp/room3/unlock.sh \
+ && echo "Once you’ve edited config.txt, run './unlock.sh'." > /tmp/room3/README.txt \
  && cd /tmp && zip -r -P silver /game/room3.zip room3 \
  && rm -rf /tmp/room3
+
 
 # Room 4 - Script Execution Puzzle (must run script to get key)
 RUN mkdir -p /tmp/room4 \
