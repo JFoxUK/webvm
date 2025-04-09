@@ -73,7 +73,7 @@ RUN mkdir -p /tmp/room5 && echo "Use 'strings dragon' to reveal the key." > /tmp
  && echo 'else' >> /tmp/room5/complete.sh \
  && echo '  echo "Wrong key. The dragon still lives..."' >> /tmp/room5/complete.sh \
  && echo 'fi' >> /tmp/room5/complete.sh \
- && chmod +x /tmp/room5/complete.sh 
+ && chmod +x /tmp/room5/complete.sh \
  && cd /tmp && zip -r -P platinum /game/room5.zip room5 \
  && rm -rf /tmp/room5
 
