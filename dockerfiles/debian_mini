@@ -24,15 +24,31 @@ RUN mkdir -p /game/room1 \
  && echo '#!/bin/bash' > /game/room1/unlock.sh \
  && echo 'read -p "Enter the key you found: " input' >> /game/room1/unlock.sh \
  && echo 'if [ "$input" = "bronze" ]; then' >> /game/room1/unlock.sh \
- && echo '    echo -e "\n🏰 Ancient door mechanism activating..."' >> /game/room1/unlock.sh \
- && echo '    frames=("▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" "▇" "▆" "▅" "▄" "▃" "▂" "▁")' >> /game/room1/unlock.sh \
+ && echo '    clear' >> /game/room1/unlock.sh \
+ && echo '    castle1="      🏰"' >> /game/room1/unlock.sh \
+ && echo '    castle2="    [†]═╦═[†]"' >> /game/room1/unlock.sh \
+ && echo '    castle3="   ╔═════════╗"' >> /game/room1/unlock.sh \
+ && echo '    castle4="   ║  ROOM 1 ║"' >> /game/room1/unlock.sh \
+ && echo '    castle5="   ║ CLEARED!║"' >> /game/room1/unlock.sh \
+ && echo '    castle6="   ╚═════════╝"' >> /game/room1/unlock.sh \
+ && echo '    castle7=" ⚔️  ONWARDS! ⚔️ "' >> /game/room1/unlock.sh \
+ && echo '    colors=("\033[31m" "\033[33m" "\033[32m" "\033[36m" "\033[35m")' >> /game/room1/unlock.sh \
+ && echo '    echo -e "\n🏰 Ancient castle awakening..."' >> /game/room1/unlock.sh \
  && echo '    for i in {1..3}; do' >> /game/room1/unlock.sh \
- && echo '        for frame in "${frames[@]}"; do' >> /game/room1/unlock.sh \
- && echo '            echo -ne "\r\033[KUnlocking... $frame"' >> /game/room1/unlock.sh \
- && echo '            sleep 0.1' >> /game/room1/unlock.sh \
+ && echo '        for color in "${colors[@]}"; do' >> /game/room1/unlock.sh \
+ && echo '            clear' >> /game/room1/unlock.sh \
+ && echo '            echo -e "\n\n"' >> /game/room1/unlock.sh \
+ && echo '            echo -e "${color}$castle1\033[0m"' >> /game/room1/unlock.sh \
+ && echo '            echo -e "${color}$castle2\033[0m"' >> /game/room1/unlock.sh \
+ && echo '            echo -e "${color}$castle3\033[0m"' >> /game/room1/unlock.sh \
+ && echo '            echo -e "${color}$castle4\033[0m"' >> /game/room1/unlock.sh \
+ && echo '            echo -e "${color}$castle5\033[0m"' >> /game/room1/unlock.sh \
+ && echo '            echo -e "${color}$castle6\033[0m"' >> /game/room1/unlock.sh \
+ && echo '            echo -e "${color}$castle7\033[0m"' >> /game/room1/unlock.sh \
+ && echo '            sleep 0.2' >> /game/room1/unlock.sh \
  && echo '        done' >> /game/room1/unlock.sh \
  && echo '    done' >> /game/room1/unlock.sh \
- && echo '    echo -e "\n\n✨ Room 2 unlocked! Use the same key to unzip room2.zip"' >> /game/room1/unlock.sh \
+ && echo '    echo -e "\n✨ Room 2 unlocked! Use the same key to unzip room2.zip\n"' >> /game/room1/unlock.sh \
  && echo 'else' >> /game/room1/unlock.sh \
  && echo '    echo "❌ Incorrect key. Try decoding the message in code.txt"' >> /game/room1/unlock.sh \
  && echo 'fi' >> /game/room1/unlock.sh \
@@ -46,15 +62,31 @@ RUN mkdir -p /game/room1 \
  && echo '#!/bin/bash' > /tmp/room2/verify.sh \
  && echo 'read -p "Enter the key you discovered: " input' >> /tmp/room2/verify.sh \
  && echo 'if [ "$input" = "silver" ]; then' >> /tmp/room2/verify.sh \
- && echo '    echo -e "\n📚 Ancient library coming to life..."' >> /tmp/room2/verify.sh \
- && echo '    books=("📗" "📘" "📙" "📕")' >> /tmp/room2/verify.sh \
- && echo '    for i in {1..5}; do' >> /tmp/room2/verify.sh \
- && echo '        for book in "${books[@]}"; do' >> /tmp/room2/verify.sh \
- && echo '            echo -ne "\r\033[KSearching ancient tomes $book"' >> /tmp/room2/verify.sh \
+ && echo '    clear' >> /tmp/room2/verify.sh \
+ && echo '    library1="    📚 ANCIENT LIBRARY 📚"' >> /tmp/room2/verify.sh \
+ && echo '    library2="  ╔══════════════════════╗"' >> /tmp/room2/verify.sh \
+ && echo '    library3="  ║ 📖 KNOWLEDGE GAINED 📖║"' >> /tmp/room2/verify.sh \
+ && echo '    library4="  ║    ROOM 2 CLEARED   ║"' >> /tmp/room2/verify.sh \
+ && echo '    library5="  ╚══════════════════════╝"' >> /tmp/room2/verify.sh \
+ && echo '    library6="     ✨ MAGIC FLOWS ✨"' >> /tmp/room2/verify.sh \
+ && echo '    books=("📗" "📘" "📙" "📕" "📚")' >> /tmp/room2/verify.sh \
+ && echo '    magic=("✨" "💫" "⭐" "🌟" "✨")' >> /tmp/room2/verify.sh \
+ && echo '    colors=("\033[32m" "\033[36m" "\033[35m" "\033[33m" "\033[34m")' >> /tmp/room2/verify.sh \
+ && echo '    echo -e "\n📚 Ancient tomes awakening..."' >> /tmp/room2/verify.sh \
+ && echo '    for i in {1..3}; do' >> /tmp/room2/verify.sh \
+ && echo '        for ((j=0; j<${#colors[@]}; j++)); do' >> /tmp/room2/verify.sh \
+ && echo '            clear' >> /tmp/room2/verify.sh \
+ && echo '            echo -e "\n\n"' >> /tmp/room2/verify.sh \
+ && echo '            echo -e "${colors[$j]}$library1 ${magic[$j]}\033[0m"' >> /tmp/room2/verify.sh \
+ && echo '            echo -e "${colors[$j]}$library2\033[0m"' >> /tmp/room2/verify.sh \
+ && echo '            echo -e "${colors[$j]}$library3\033[0m"' >> /tmp/room2/verify.sh \
+ && echo '            echo -e "${colors[$j]}$library4 ${books[$j]}\033[0m"' >> /tmp/room2/verify.sh \
+ && echo '            echo -e "${colors[$j]}$library5\033[0m"' >> /tmp/room2/verify.sh \
+ && echo '            echo -e "${colors[$j]}$library6\033[0m"' >> /tmp/room2/verify.sh \
  && echo '            sleep 0.2' >> /tmp/room2/verify.sh \
  && echo '        done' >> /tmp/room2/verify.sh \
  && echo '    done' >> /tmp/room2/verify.sh \
- && echo '    echo -e "\n\n🗝️  Room 3 unlocked! Use this key to unzip room3.zip"' >> /tmp/room2/verify.sh \
+ && echo '    echo -e "\n🗝️  Room 3 unlocked! Use this key to unzip room3.zip\n"' >> /tmp/room2/verify.sh \
  && echo 'else' >> /tmp/room2/verify.sh \
  && echo '    echo "❌ Wrong key. Keep searching the library..."' >> /tmp/room2/verify.sh \
  && echo 'fi' >> /tmp/room2/verify.sh \
@@ -89,23 +121,51 @@ RUN mkdir -p /tmp/room3 \
  && rm -rf /tmp/room3
 
 
-# Room 4 - Script Execution Puzzle (must run script to get key)
+# Room 4 - Advanced Cipher Puzzle
 RUN mkdir -p /tmp/room4 \
  && echo '#!/bin/bash' > /tmp/room4/cipher.sh \
- && echo 'encoded="VGhlIGtleSBpczogcGxhdGludW0="' >> /tmp/room4/cipher.sh \
- && echo 'echo "Decoding ancient runes..."' >> /tmp/room4/cipher.sh \
- && echo 'runes=("⚡" "✨" "💫" "⭐" "🌟")' >> /tmp/room4/cipher.sh \
- && echo 'for i in {1..10}; do' >> /tmp/room4/cipher.sh \
- && echo '    for rune in "${runes[@]}"; do' >> /tmp/room4/cipher.sh \
- && echo '        echo -ne "\r\033[KDecoding ancient runes... $rune"' >> /tmp/room4/cipher.sh \
- && echo '        sleep 0.2' >> /tmp/room4/cipher.sh \
+ && echo 'part1="VGhlIGtleSBpcyBwbGF0aW51bSBidXQgeW91IG11c3QgZGVjb2RlIHRoZSBwYXJ0cyBhbmQgY29tYmluZSB0aGVt"' >> /tmp/room4/cipher.sh \
+ && echo 'part2="UGxhdGludW0gaXMgdGhlIGtleSB0byB0aGUgbmV4dCByb29tLg=="' >> /tmp/room4/cipher.sh \
+ && echo 'part3="VGhlIGZpbmFsIGtleSBpcyBoaWRkZW4gaW4gdGhlIHdvcmRzLg=="' >> /tmp/room4/cipher.sh \
+ && echo 'echo "🔮 Welcome to the Cryptomancer'\''s Challenge!"' >> /tmp/room4/cipher.sh \
+ && echo 'echo "Three mystical phrases await your decoding skills..."' >> /tmp/room4/cipher.sh \
+ && echo 'echo -e "\n1) $part1"' >> /tmp/room4/cipher.sh \
+ && echo 'echo "2) $part2"' >> /tmp/room4/cipher.sh \
+ && echo 'echo "3) $part3"' >> /tmp/room4/cipher.sh \
+ && echo 'echo -e "\nDecipher them using: echo <phrase> | base64 -d"' >> /tmp/room4/cipher.sh \
+ && echo 'read -p "Once you have found the key, enter it here: " input' >> /tmp/room4/cipher.sh \
+ && echo 'if [ "$input" = "platinum" ]; then' >> /tmp/room4/cipher.sh \
+ && echo '    clear' >> /tmp/room4/cipher.sh \
+ && echo '    cipher1="    🔮 CRYPTOMANCER'\''S CHAMBER 🔮"' >> /tmp/room4/cipher.sh \
+ && echo '    cipher2="  ╭──────────────────────────╮"' >> /tmp/room4/cipher.sh \
+ && echo '    cipher3="  │   ANCIENT CODES BROKEN   │"' >> /tmp/room4/cipher.sh \
+ && echo '    cipher4="  │     ROOM 4 CLEARED      │"' >> /tmp/room4/cipher.sh \
+ && echo '    cipher5="  ╰──────────────────────────╯"' >> /tmp/room4/cipher.sh \
+ && echo '    cipher6="      🌌 MAGIC SURGES 🌌"' >> /tmp/room4/cipher.sh \
+ && echo '    symbols=("⚡" "🌟" "✨" "💫" "🌠" "⭐")' >> /tmp/room4/cipher.sh \
+ && echo '    colors=("\033[35m" "\033[36m" "\033[34m" "\033[33m" "\033[32m" "\033[31m")' >> /tmp/room4/cipher.sh \
+ && echo '    echo -e "\n🔮 Ancient magic resonating..."' >> /tmp/room4/cipher.sh \
+ && echo '    for i in {1..3}; do' >> /tmp/room4/cipher.sh \
+ && echo '        for ((j=0; j<${#colors[@]}; j++)); do' >> /tmp/room4/cipher.sh \
+ && echo '            clear' >> /tmp/room4/cipher.sh \
+ && echo '            echo -e "\n\n"' >> /tmp/room4/cipher.sh \
+ && echo '            echo -e "${colors[$j]}$cipher1 ${symbols[$j]}\033[0m"' >> /tmp/room4/cipher.sh \
+ && echo '            echo -e "${colors[$j]}$cipher2\033[0m"' >> /tmp/room4/cipher.sh \
+ && echo '            echo -e "${colors[$j]}$cipher3 ${symbols[$(((j+1)%6))]}\033[0m"' >> /tmp/room4/cipher.sh \
+ && echo '            echo -e "${colors[$j]}$cipher4 ${symbols[$(((j+2)%6))]}\033[0m"' >> /tmp/room4/cipher.sh \
+ && echo '            echo -e "${colors[$j]}$cipher5\033[0m"' >> /tmp/room4/cipher.sh \
+ && echo '            echo -e "${colors[$j]}$cipher6 ${symbols[$(((j+3)%6))]}\033[0m"' >> /tmp/room4/cipher.sh \
+ && echo '            sleep 0.2' >> /tmp/room4/cipher.sh \
+ && echo '        done' >> /tmp/room4/cipher.sh \
  && echo '    done' >> /tmp/room4/cipher.sh \
- && echo 'done' >> /tmp/room4/cipher.sh \
- && echo 'echo -e "\n"' >> /tmp/room4/cipher.sh \
- && echo 'echo "$encoded" | base64 -d' >> /tmp/room4/cipher.sh \
+ && echo '    echo -e "\n🗝️  Final chamber awaits! Use this key to unzip room5.zip\n"' >> /tmp/room4/cipher.sh \
+ && echo 'else' >> /tmp/room4/cipher.sh \
+ && echo '    echo "❌ Incorrect key. The ancient codes remain unbroken..."' >> /tmp/room4/cipher.sh \
+ && echo 'fi' >> /tmp/room4/cipher.sh \
  && chmod +x /tmp/room4/cipher.sh \
- && echo "A mysterious script is here, named cipher.sh." > /tmp/room4/README.txt \
- && echo "It won't give up its secrets by mere reading... perhaps try executing it." >> /tmp/room4/README.txt \
+ && echo "A mysterious script lies before you (cipher.sh)." > /tmp/room4/README.txt \
+ && echo "The Cryptomancer has hidden their secrets in base64 encoded messages." >> /tmp/room4/README.txt \
+ && echo "Decode all three parts to reveal the true key." >> /tmp/room4/README.txt \
  && cd /tmp && zip -r -P gold /game/room4.zip room4 \
  && rm -rf /tmp/room4
 
