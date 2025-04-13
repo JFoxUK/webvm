@@ -135,7 +135,6 @@ RUN mkdir -p /tmp/room4 \
  && echo 'echo -e "\nYou can decode them one by one using: echo <phrase> | base64 -d"' >> /tmp/room4/cipher.sh \
  && echo 'echo "Or try to decode them all at once by combining the parts..."' >> /tmp/room4/cipher.sh \
  && echo 'echo "To make the variables available, run: source ./cipher.sh"' >> /tmp/room4/cipher.sh \
- && echo 'echo "Then you can use: echo \"\$part1\$part2\$part3\" | base64 -d"' >> /tmp/room4/cipher.sh \
  && echo 'read -p "Once you have found the key, enter it here: " input' >> /tmp/room4/cipher.sh \
  && echo 'if [ "$input" = "platinum" ]; then' >> /tmp/room4/cipher.sh \
  && echo '    clear' >> /tmp/room4/cipher.sh \
