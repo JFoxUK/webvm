@@ -171,47 +171,68 @@ RUN mkdir -p /tmp/room4 \
  && cd /tmp && zip -r -P gold /game/room4.zip room4 \
  && rm -rf /tmp/room4
 
-# --- Room 5 setup (fixed) ---
-RUN mkdir -p /dungeon/room5 && \
-    echo '#!/bin/bash' > /dungeon/room5/complete.sh && \
-    echo 'echo -n "Enter the key: "' >> /dungeon/room5/complete.sh && \
-    echo 'read key' >> /dungeon/room5/complete.sh && \
-    echo 'if [ "$key" = "diamond" ]; then' >> /dungeon/room5/complete.sh && \
-    echo '    echo -en "\e[31m"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "           _,."' >> /dungeon/room5/complete.sh && \
-    echo '    echo "         ,` -.)"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "        \`( _/\'-\\\\-."' >> /dungeon/room5/complete.sh && \
-    echo '    echo "       /,|`--._,-^|            ,"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "       \_| |`-._/||          ,'\''|"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "         |  `-, / |         /  /"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "         |     || |        /  /"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "          `r-._||/   __   /  /"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "      __,-<_     )`-/  `./  /"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "     `  \   `---'\''   \   /  /"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "         |           |./  /"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "         /           //  /"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "     \_/\` \         |/  /"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "      |    |   _,^-'\''/  /"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "      |    , ``  (\/  /_"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "       \,.->._    \X-=/^"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "       (  /   `-._//^`"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "        `Y-.____(__}"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "         |     {__)"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "               ()`"' >> /dungeon/room5/complete.sh && \
-    echo '    echo -en "\e[0m"' >> /dungeon/room5/complete.sh && \
-    echo '    echo ""' >> /dungeon/room5/complete.sh && \
-    echo '    echo "#########################################"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "#   CONGRATULATIONS! Dungeon Complete   #"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "#                                     #"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "# You have vanquished the dragon and  #"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "# claimed the Diamond of Knowledge!  #"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "#                                     #"' >> /dungeon/room5/complete.sh && \
-    echo '    echo "#########################################"' >> /dungeon/room5/complete.sh && \
-    echo 'else' >> /dungeon/room5/complete.sh && \
-    echo '    echo "The key \"$key\" is incorrect. Try again."' >> /dungeon/room5/complete.sh && \
-    echo 'fi' >> /dungeon/room5/complete.sh && \
-    chmod +x /dungeon/room5/complete.sh
-
+RUN mkdir -p /tmp/room5 \
+ && echo "Use 'strings dragon' to reveal the key." > /tmp/room5/instructions.txt \
+ && dd if=/dev/urandom bs=1 count=100 of=/tmp/room5/dragon 2>/dev/null \
+ && echo 'diamond' >> /tmp/room5/dragon \
+ && echo '#!/bin/bash' > /tmp/room5/complete.sh \
+ && echo 'read -p "Enter the final key: " input' >> /tmp/room5/complete.sh \
+ && echo 'if [ "$input" = "diamond" ]; then' >> /tmp/room5/complete.sh \
+ && echo '    clear' >> /tmp/room5/complete.sh \
+ && echo '    dragon1="           ___====-_  _-====___"' >> /tmp/room5/complete.sh \
+ && echo '    dragon2="           _--^^^#####//      \#####^^^--_"' >> /tmp/room5/complete.sh \
+ && echo '    dragon3="        _-^##########// \\(    \\) \\##########^-_"' >> /tmp/room5/complete.sh \
+ && echo '    dragon4="       -############//  |\\\\^^/|  \\\\############-"' >> /tmp/room5/complete.sh \
+ && echo '    dragon5="     _/############//   (@::@)   \\\\############\\\\_"' >> /tmp/room5/complete.sh \
+ && echo '    dragon6="    /#############\\\\((     \\\\//     ))#############\\\\"' >> /tmp/room5/complete.sh \
+ && echo '    dragon7="   -###############\\\\    \\\\(oo\\\\)    //###############-"' >> /tmp/room5/complete.sh \
+ && echo '    dragon8="  -#################\\\\  / VV \\\\  //#################-"' >> /tmp/room5/complete.sh \
+ && echo '    dragon9=" -###################\\\\/      \\\\//###################-"' >> /tmp/room5/complete.sh \
+ && echo '    dragon10="_#/|##########/\\\\######\\\\(   /\\\\   \\\\)######/\\\\##########|\\\\#_"' >> /tmp/room5/complete.sh \
+ && echo '    dragon11="|/ |#/\\\\#/\\\\#/\\\\/  \\\\#/\\\\##\\\\  |  |  /##/\\\\#/  \\\\/\\\\#/\\\\#/\\\\#| \\\\|"' >> /tmp/room5/complete.sh \
+ && echo '    dragon12="`  |/  V  V  `   V  \\\\#\\\\| |  | |/#/  V   '\''  V  V  \\\\|  '\''"' >> /tmp/room5/complete.sh \
+ && echo '    dragon13="   `   `  `      `   / | |  | | \\\\   '\''      '\''  '\''   '\''"' >> /tmp/room5/complete.sh \
+ && echo '    dragon14="                    \\\\(  | |  | |  \\\\)"' >> /tmp/room5/complete.sh \
+ && echo '    dragon15="                   __\\\\ | |  | | /__"' >> /tmp/room5/complete.sh \
+ && echo '    dragon16="                  \\\\(vvv\\\\(VVV\\\\)\\(VVV\\\\)vvv\\\\)"' >> /tmp/room5/complete.sh \
+ && echo '    colors=("\033[31m" "\033[33m" "\033[32m" "\033[36m" "\033[35m")' >> /tmp/room5/complete.sh \
+ && echo '    echo -e "\n🐉 The dragon awakens..."' >> /tmp/room5/complete.sh \
+ && echo '    for i in {1..3}; do' >> /tmp/room5/complete.sh \
+ && echo '        for color in "${colors[@]}"; do' >> /tmp/room5/complete.sh \
+ && echo '            clear' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "\n\n"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon1}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon2}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon3}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon4}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon5}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon6}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon7}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon8}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon9}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon10}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon11}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon12}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon13}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon14}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon15}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            echo -e "${color}${dragon16}\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '            sleep 0.2' >> /tmp/room5/complete.sh \
+ && echo '        done' >> /tmp/room5/complete.sh \
+ && echo '    done' >> /tmp/room5/complete.sh \
+ && echo '    echo -e "\n\n🎉 CONGRATULATIONS 🎉"' >> /tmp/room5/complete.sh \
+ && echo '    echo "You have defeated the dragon and completed the Linux Dungeon Game!"' >> /tmp/room5/complete.sh \
+ && echo '    echo ""' >> /tmp/room5/complete.sh \
+ && echo '    echo "================== CERTIFICATE =============="' >> /tmp/room5/complete.sh \
+ && echo '    echo "|                                           |"' >> /tmp/room5/complete.sh \
+ && echo '    echo "|        Certified Terminal Adventurer      |"' >> /tmp/room5/complete.sh \
+ && echo '    echo "|         Conqueror of the Dungeon CLI      |"' >> /tmp/room5/complete.sh \
+ && echo '    echo "|                 by JFOXUK                 |"' >> /tmp/room5/complete.sh \
+ && echo '    echo "|___________________________________________|"' >> /tmp/room5/complete.sh \
+ && echo 'else' >> /tmp/room5/complete.sh \
+ && echo '    echo "❌ Wrong key. The dragon still lives..."' >> /tmp/room5/complete.sh \
+ && echo 'fi' >> /tmp/room5/complete.sh \
+ && chmod +x /tmp/room5/complete.sh \
  && cd /tmp && zip -r -P platinum /game/room5.zip room5 \
  && rm -rf /tmp/room5
 
