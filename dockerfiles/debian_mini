@@ -171,38 +171,35 @@ RUN mkdir -p /tmp/room4 \
  && cd /tmp && zip -r -P gold /game/room4.zip room4 \
  && rm -rf /tmp/room4
 
-# Create room5 directory and generate the complete.sh script with proper heredocs
 RUN mkdir -p /tmp/room5 && \
     cat << 'EOF' > /tmp/room5/complete.sh
 #!/bin/bash
 key="$1"
 if [ "$key" = "diamond" ]; then
-    # Turn text red for the dragon ASCII art
     echo -e "\033[31m"
     cat << "DRAGON"
             _,.
           ,` -.)
-         '( _/'-\\-.               
-        /,|`--._,-^|            ,     
-        \_| |`-._/||          ,'|       
-          |  `-, / |         /  /      
-          |     || |        /  /       
-           `r-._||/   __   /  /  
+         '( _/'-\\-.
+        /,|`--._,-^|            ,
+        \_| |`-._/||          ,'|
+          |  `-, / |         /  /
+          |     || |        /  /
+           `r-._||/   __   /  /
        __,-<_     )`-/  `./  /
-      '  \   `---'   \   /  / 
-          |           |./  /  
-          /           //  /     
-      \_/' \         |/  /         
-       |    |   _,^-'/  /              
-       |    , ``  (\/  /_        
-        \,.->._    \X-=/^         
-        (  /   `-._//^`  
-         `Y-.____(__}              
-          |     {__)           
+      '  \   `---'   \   /  /
+          |           |./  /
+          /           //  /
+      \_/' \         |/  /
+       |    |   _,^-'/  /
+       |    , ``  (\/  /_
+        \,.->._    \X-=/^
+        (  /   `-._//^`
+         `Y-.____(__}
+          |     {__)
                 ()`
 DRAGON
-    echo -e "\033[0m"  # Reset color back to normal
-    # Display ASCII art certificate of completion
+    echo -e "\033[0m"
     cat << "CERT"
 +------------------------------------------------+
 |   CONGRATULATIONS, ADVENTURER!                 |
@@ -215,10 +212,10 @@ else
     echo "Nothing happens... Perhaps you lack the proper key."
 fi
 EOF
-    && chmod +x /tmp/room5/complete.sh
+    && chmod +x /tmp/room5/complete.sh && \
+    cd /tmp && zip -r -P platinum /game/room5.zip room5 && \
+    rm -rf /tmp/room5
 
- && cd /tmp && zip -r -P platinum /game/room5.zip room5 \
- && rm -rf /tmp/room5
 
 # Copy all starting files to user's home
 RUN cp -r /game/room1 /home/user/ \
