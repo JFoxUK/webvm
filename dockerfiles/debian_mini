@@ -124,15 +124,16 @@ RUN mkdir -p /tmp/room3 \
 # Room 4 - Advanced Cipher Puzzle
 RUN mkdir -p /tmp/room4 \
  && echo '#!/bin/bash' > /tmp/room4/cipher.sh \
- && echo 'part1="VGhlIGtleSBpcyBwbGF0aW51bSBidXQgeW91IG11c3QgZGVjb2RlIHRoZSBwYXJ0cyBhbmQgY29tYmluZSB0aGVt"' >> /tmp/room4/cipher.sh \
- && echo 'part2="UGxhdGludW0gaXMgdGhlIGtleSB0byB0aGUgbmV4dCByb29tLg=="' >> /tmp/room4/cipher.sh \
- && echo 'part3="VGhlIGZpbmFsIGtleSBpcyBoaWRkZW4gaW4gdGhlIHdvcmRzLg=="' >> /tmp/room4/cipher.sh \
+ && echo 'part1="VGhlIGZpcnN0IHBhcnQgaXM6IHBs"' >> /tmp/room4/cipher.sh \
+ && echo 'part2="YXQgdGhlIHNlY29uZCBpczogdGlud"' >> /tmp/room4/cipher.sh \
+ && echo 'part3="dW0gaXMgdGhlIGZpbmFsIHBhcnQu"' >> /tmp/room4/cipher.sh \
  && echo 'echo "🔮 Welcome to the Cryptomancer'\''s Challenge!"' >> /tmp/room4/cipher.sh \
  && echo 'echo "Three mystical phrases await your decoding skills..."' >> /tmp/room4/cipher.sh \
  && echo 'echo -e "\n1) $part1"' >> /tmp/room4/cipher.sh \
  && echo 'echo "2) $part2"' >> /tmp/room4/cipher.sh \
  && echo 'echo "3) $part3"' >> /tmp/room4/cipher.sh \
- && echo 'echo -e "\nDecipher them using: echo <phrase> | base64 -d"' >> /tmp/room4/cipher.sh \
+ && echo 'echo -e "\nYou can decode them one by one using: echo <phrase> | base64 -d"' >> /tmp/room4/cipher.sh \
+ && echo 'echo "Or try to decode them all at once by combining the parts..."' >> /tmp/room4/cipher.sh \
  && echo 'read -p "Once you have found the key, enter it here: " input' >> /tmp/room4/cipher.sh \
  && echo 'if [ "$input" = "platinum" ]; then' >> /tmp/room4/cipher.sh \
  && echo '    clear' >> /tmp/room4/cipher.sh \
