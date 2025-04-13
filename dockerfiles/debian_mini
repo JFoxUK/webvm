@@ -20,13 +20,46 @@ RUN mkdir -p /game/room1 \
  && echo "Explore. Discover. Use the basics: ls, cd, cat." >> /game/room1/note.txt \
  && echo "A scrap of paper is here with strange text (see code.txt)." >> /game/room1/note.txt \
  && echo "Hint: decoding it might reveal something useful." >> /game/room1/note.txt \
- && echo "VGhlIGtleSBpczogYnJvbnpl" > /game/room1/code.txt
-
-# Room 2 - Hidden Key in Many Files (search with grep/find)
-RUN mkdir -p /tmp/room2/library \
+ && echo "VGhlIGtleSBpczogYnJvbnpl" > /game/room1/code.txt \
+ && echo '#!/bin/bash' > /game/room1/unlock.sh \
+ && echo 'read -p "Enter the key you found: " input' >> /game/room1/unlock.sh \
+ && echo 'if [ "$input" = "bronze" ]; then' >> /game/room1/unlock.sh \
+ && echo '    echo -e "\n🏰 Ancient door mechanism activating..."' >> /game/room1/unlock.sh \
+ && echo '    frames=("▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" "▇" "▆" "▅" "▄" "▃" "▂" "▁")' >> /game/room1/unlock.sh \
+ && echo '    for i in {1..3}; do' >> /game/room1/unlock.sh \
+ && echo '        for frame in "${frames[@]}"; do' >> /game/room1/unlock.sh \
+ && echo '            echo -ne "\r\033[KUnlocking... $frame"' >> /game/room1/unlock.sh \
+ && echo '            sleep 0.1' >> /game/room1/unlock.sh \
+ && echo '        done' >> /game/room1/unlock.sh \
+ && echo '    done' >> /game/room1/unlock.sh \
+ && echo '    echo -e "\n\n✨ Room 2 unlocked! Use the same key to unzip room2.zip"' >> /game/room1/unlock.sh \
+ && echo 'else' >> /game/room1/unlock.sh \
+ && echo '    echo "❌ Incorrect key. Try decoding the message in code.txt"' >> /game/room1/unlock.sh \
+ && echo 'fi' >> /game/room1/unlock.sh \
+ && chmod +x /game/room1/unlock.sh \
+ && echo "Once you find the key, run './unlock.sh'" >> /game/room1/note.txt \
+\
+ && mkdir -p /tmp/room2/library \
  && echo "Look deeper, young hacker. Not everything is given freely." > /tmp/room2/clue.txt \
  && for i in $(seq 1 50); do echo "An ancient scroll with illegible text." > /tmp/room2/library/scroll${i}.txt; done \
  && echo "The key is: silver" > /tmp/room2/library/scroll17.txt \
+ && echo '#!/bin/bash' > /tmp/room2/verify.sh \
+ && echo 'read -p "Enter the key you discovered: " input' >> /tmp/room2/verify.sh \
+ && echo 'if [ "$input" = "silver" ]; then' >> /tmp/room2/verify.sh \
+ && echo '    echo -e "\n📚 Ancient library coming to life..."' >> /tmp/room2/verify.sh \
+ && echo '    books=("📗" "📘" "📙" "📕")' >> /tmp/room2/verify.sh \
+ && echo '    for i in {1..5}; do' >> /tmp/room2/verify.sh \
+ && echo '        for book in "${books[@]}"; do' >> /tmp/room2/verify.sh \
+ && echo '            echo -ne "\r\033[KSearching ancient tomes $book"' >> /tmp/room2/verify.sh \
+ && echo '            sleep 0.2' >> /tmp/room2/verify.sh \
+ && echo '        done' >> /tmp/room2/verify.sh \
+ && echo '    done' >> /tmp/room2/verify.sh \
+ && echo '    echo -e "\n\n🗝️  Room 3 unlocked! Use this key to unzip room3.zip"' >> /tmp/room2/verify.sh \
+ && echo 'else' >> /tmp/room2/verify.sh \
+ && echo '    echo "❌ Wrong key. Keep searching the library..."' >> /tmp/room2/verify.sh \
+ && echo 'fi' >> /tmp/room2/verify.sh \
+ && chmod +x /tmp/room2/verify.sh \
+ && echo "When you find the key, run './verify.sh'" >> /tmp/room2/clue.txt \
  && cd /tmp && zip -r -P bronze /game/room2.zip room2 \
  && rm -rf /tmp/room2
 
@@ -37,9 +70,21 @@ RUN mkdir -p /tmp/room3 \
  && echo "# (Hint: use vim to edit this file)" >> /tmp/room3/config.txt \
  && echo '#!/bin/bash' > /tmp/room3/unlock.sh \
  && echo 'source config.txt' >> /tmp/room3/unlock.sh \
- && echo 'if [ "$OPEN" = "true" ]; then echo "The key is: gold"; else echo "The gate remains shut..."; fi' >> /tmp/room3/unlock.sh \
+ && echo 'if [ "$OPEN" = "true" ]; then' >> /tmp/room3/unlock.sh \
+ && echo '    frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")' >> /tmp/room3/unlock.sh \
+ && echo '    echo -n "Opening the gate "' >> /tmp/room3/unlock.sh \
+ && echo '    for i in {1..20}; do' >> /tmp/room3/unlock.sh \
+ && echo '        for frame in "${frames[@]}"; do' >> /tmp/room3/unlock.sh \
+ && echo '            echo -ne "\r\033[KOpening the gate $frame"' >> /tmp/room3/unlock.sh \
+ && echo '            sleep 0.1' >> /tmp/room3/unlock.sh \
+ && echo '        done' >> /tmp/room3/unlock.sh \
+ && echo '    done' >> /tmp/room3/unlock.sh \
+ && echo '    echo -e "\n\n🎉 Gate unlocked! The key is: gold\n"' >> /tmp/room3/unlock.sh \
+ && echo 'else' >> /tmp/room3/unlock.sh \
+ && echo '    echo "❌ The gate remains shut..."' >> /tmp/room3/unlock.sh \
+ && echo 'fi' >> /tmp/room3/unlock.sh \
  && chmod +x /tmp/room3/unlock.sh \
- && echo "Once you’ve edited config.txt, run './unlock.sh'." > /tmp/room3/README.txt \
+ && echo "Once you've edited config.txt, run './unlock.sh'." > /tmp/room3/README.txt \
  && cd /tmp && zip -r -P silver /game/room3.zip room3 \
  && rm -rf /tmp/room3
 
@@ -48,6 +93,15 @@ RUN mkdir -p /tmp/room3 \
 RUN mkdir -p /tmp/room4 \
  && echo '#!/bin/bash' > /tmp/room4/cipher.sh \
  && echo 'encoded="VGhlIGtleSBpczogcGxhdGludW0="' >> /tmp/room4/cipher.sh \
+ && echo 'echo "Decoding ancient runes..."' >> /tmp/room4/cipher.sh \
+ && echo 'runes=("⚡" "✨" "💫" "⭐" "🌟")' >> /tmp/room4/cipher.sh \
+ && echo 'for i in {1..10}; do' >> /tmp/room4/cipher.sh \
+ && echo '    for rune in "${runes[@]}"; do' >> /tmp/room4/cipher.sh \
+ && echo '        echo -ne "\r\033[KDecoding ancient runes... $rune"' >> /tmp/room4/cipher.sh \
+ && echo '        sleep 0.2' >> /tmp/room4/cipher.sh \
+ && echo '    done' >> /tmp/room4/cipher.sh \
+ && echo 'done' >> /tmp/room4/cipher.sh \
+ && echo 'echo -e "\n"' >> /tmp/room4/cipher.sh \
  && echo 'echo "$encoded" | base64 -d' >> /tmp/room4/cipher.sh \
  && chmod +x /tmp/room4/cipher.sh \
  && echo "A mysterious script is here, named cipher.sh." > /tmp/room4/README.txt \
@@ -61,17 +115,49 @@ RUN mkdir -p /tmp/room5 && echo "Use 'strings dragon' to reveal the key." > /tmp
  && echo '#!/bin/bash' > /tmp/room5/complete.sh \
  && echo 'read -p "Enter the final key: " input' >> /tmp/room5/complete.sh \
  && echo 'if [ "$input" = "diamond" ]; then' >> /tmp/room5/complete.sh \
- && echo '  echo "\n\n🎉 CONGRATULATIONS 🎉"' >> /tmp/room5/complete.sh \
- && echo '  echo "You have completed the Linux Dungeon Game!"' >> /tmp/room5/complete.sh \
- && echo '  echo ""' >> /tmp/room5/complete.sh \
- && echo '  echo "================== CERTIFICATE =============="' >> /tmp/room5/complete.sh \
- && echo '  echo "|                                           |"' >> /tmp/room5/complete.sh \
- && echo '  echo "|        Certified Terminal Adventurer      |"' >> /tmp/room5/complete.sh \
- && echo '  echo "|         Conqueror of the Dungeon CLI      |"' >> /tmp/room5/complete.sh \
- && echo '  echo "|                 by JFOXUK                 |"' >> /tmp/room5/complete.sh \
- && echo '  echo "|___________________________________________|"' >> /tmp/room5/complete.sh \
+ && echo '    clear' >> /tmp/room5/complete.sh \
+ && echo '    echo -e "\n\n"' >> /tmp/room5/complete.sh \
+ && echo '    dragon1="    /\    /\         __"' >> /tmp/room5/complete.sh \
+ && echo '    dragon2="   /  \  /  \     __/ _)"' >> /tmp/room5/complete.sh \
+ && echo '    dragon3="  /    \/    \   (_/  |_"' >> /tmp/room5/complete.sh \
+ && echo '    dragon4=" /      \     \      | \"' >> /tmp/room5/complete.sh \
+ && echo '    dragon5="<        >    >      | |"' >> /tmp/room5/complete.sh \
+ && echo '    dragon6=" \      /    /     _|_/"' >> /tmp/room5/complete.sh \
+ && echo '    dragon7="  \    /    /     /   \"' >> /tmp/room5/complete.sh \
+ && echo '    dragon8="   \  /    /     /     \"' >> /tmp/room5/complete.sh \
+ && echo '    for i in {1..3}; do' >> /tmp/room5/complete.sh \
+ && echo '        clear' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[31m$dragon1\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[31m$dragon2\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[31m$dragon3\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[31m$dragon4\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[31m$dragon5\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[31m$dragon6\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[31m$dragon7\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[31m$dragon8\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        sleep 0.5' >> /tmp/room5/complete.sh \
+ && echo '        clear' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[33m$dragon1\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[33m$dragon2\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[33m$dragon3\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[33m$dragon4\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[33m$dragon5\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[33m$dragon6\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[33m$dragon7\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        echo -e "\033[33m$dragon8\033[0m"' >> /tmp/room5/complete.sh \
+ && echo '        sleep 0.5' >> /tmp/room5/complete.sh \
+ && echo '    done' >> /tmp/room5/complete.sh \
+ && echo '    echo -e "\n\n🎉 CONGRATULATIONS 🎉"' >> /tmp/room5/complete.sh \
+ && echo '    echo "You have defeated the dragon and completed the Linux Dungeon Game!"' >> /tmp/room5/complete.sh \
+ && echo '    echo ""' >> /tmp/room5/complete.sh \
+ && echo '    echo "================== CERTIFICATE =============="' >> /tmp/room5/complete.sh \
+ && echo '    echo "|                                           |"' >> /tmp/room5/complete.sh \
+ && echo '    echo "|        Certified Terminal Adventurer      |"' >> /tmp/room5/complete.sh \
+ && echo '    echo "|         Conqueror of the Dungeon CLI      |"' >> /tmp/room5/complete.sh \
+ && echo '    echo "|                 by JFOXUK                 |"' >> /tmp/room5/complete.sh \
+ && echo '    echo "|___________________________________________|"' >> /tmp/room5/complete.sh \
  && echo 'else' >> /tmp/room5/complete.sh \
- && echo '  echo "Wrong key. The dragon still lives..."' >> /tmp/room5/complete.sh \
+ && echo '    echo "❌ Wrong key. The dragon still lives..."' >> /tmp/room5/complete.sh \
  && echo 'fi' >> /tmp/room5/complete.sh \
  && chmod +x /tmp/room5/complete.sh \
  && cd /tmp && zip -r -P platinum /game/room5.zip room5 \
