@@ -124,9 +124,9 @@ RUN mkdir -p /tmp/room3 \
 # Room 4 - Advanced Cipher Puzzle
 RUN mkdir -p /tmp/room4 \
  && echo '#!/bin/bash' > /tmp/room4/cipher.sh \
- && echo 'part1="VGhlIGZpcnN0IHBhcnQgaXM6IHBsYXQ="' >> /tmp/room4/cipher.sh \
+ && echo 'part1="VGhlIGZpcnN0IHBhcnQgaXM6IHBsYXQK"' >> /tmp/room4/cipher.sh \
  && echo 'part2="VGhlIHNlY29uZCBpczogdGludA=="' >> /tmp/room4/cipher.sh \
- && echo 'part3="VGhlIGZpbmFsIHBhcnQgaXM6IHVt"' >> /tmp/room4/cipher.sh \
+ && echo 'part3="VGhlIGZpbmFsIHBhcnQgaXM6IHVtCg=="' >> /tmp/room4/cipher.sh \
  && echo 'echo "🔮 Welcome to the Cryptomancer'\''s Challenge!"' >> /tmp/room4/cipher.sh \
  && echo 'echo "Three mystical phrases await your decoding skills..."' >> /tmp/room4/cipher.sh \
  && echo 'echo -e "\n1) $part1"' >> /tmp/room4/cipher.sh \
