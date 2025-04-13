@@ -173,7 +173,7 @@ RUN mkdir -p /tmp/room4 \
 
 # Create room5 directory and generate the complete.sh script with proper heredocs
 RUN mkdir -p /tmp/room5 && \
-    cat > /tmp/room5/complete.sh << 'EOF'
+    cat << 'EOF' > /tmp/room5/complete.sh
 #!/bin/bash
 key="$1"
 if [ "$key" = "diamond" ]; then
