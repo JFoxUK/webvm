@@ -125,7 +125,7 @@ RUN mkdir -p /tmp/room3 \
 RUN mkdir -p /tmp/room4 \
  && echo '#!/bin/bash' > /tmp/room4/cipher.sh \
  && echo 'part1="VGhlIGZpcnN0IHBhcnQgaXMgcGxhCg=="' >> /tmp/room4/cipher.sh \
- && echo 'part2="VGhlIHNlY29uZCBwYXJ0IGlzIHRpbg=="' >> /tmp/room4/cipher.sh \
+ && echo 'part2="VGhlIHNlY29uZCBwYXJ0IGlzIHRpbgo="' >> /tmp/room4/cipher.sh \
  && echo 'part3="VGhlIGZpbmFsIHBhcnQgaXMgdW0K"' >> /tmp/room4/cipher.sh \
  && echo 'echo "🔮 Welcome to the Cryptomancer'\''s Challenge!"' >> /tmp/room4/cipher.sh \
  && echo 'echo "Three mystical phrases await your decoding skills..."' >> /tmp/room4/cipher.sh \
